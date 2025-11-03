@@ -67,8 +67,10 @@ Content-Type: application/json
 ```
 
 **Role Values:**
-- `1`: ADMIN
-- `2`: USER (or other role)
+- `1`: Administrator
+- `2`: Moderator
+- `3`: Developer
+- `4`: Member
 
 **Error Response (4xx):**
 ```json
@@ -84,122 +86,6 @@ Content-Type: application/json
 - Store the `token` from the response for authenticated requests
 - Use the `role` value to determine user permissions
 - Token expires after 1 hour (3600000ms)
-
----
-
-## Brand Service
-
-### 2. Get Brand Name by ID
-
-**Endpoint:** `GET /api/brands/name?id={id}`
-
-**Description:** Retrieve brand name by brand ID
-
-**Request Parameters:**
-- `id` (query parameter): Integer - Brand ID
-
-**Example Request:**
-```
-GET /api/brands/name?id=1
-```
-
-**Success Response (200 OK):**
-```json
-{
-  "success": true,
-  "message": null,
-  "data": "Brand Name",
-  "timestamp": "2025-11-03T10:30:00Z"
-}
-```
-
-### 3. Create Blind Box (Brand Service)
-
-**Endpoint:** `POST /api/brands/create`
-
-**Description:** Create a new blind box entry
-
-**Request Headers:**
-```
-Content-Type: application/json
-```
-
-**Request Body:**
-```json
-{
-  "name": "Blind Box Name",
-  "categoryId": 1,
-  "brandId": 1,
-  "price": 29.99,
-  "stock": 50,
-  "releaseDate": "2025-11-15"
-}
-```
-
-**Success Response (200 OK):**
-```json
-{
-  "success": true,
-  "message": "Blind box created successfully",
-  "data": null,
-  "timestamp": "2025-11-03T10:30:00Z"
-}
-```
-
-### 4. Update Blind Box (Brand Service)
-
-**Endpoint:** `PUT /api/brands/update/{id}`
-
-**Description:** Update an existing blind box
-
-**Path Parameters:**
-- `id`: Integer - Blind Box ID
-
-**Request Body:**
-```json
-{
-  "name": "Updated Blind Box Name",
-  "categoryId": 1,
-  "brandId": 1,
-  "price": 35.99,
-  "stock": 75,
-  "releaseDate": "2025-11-20"
-}
-```
-
-**Success Response (200 OK):**
-```json
-{
-  "success": true,
-  "message": "Blind box updated successfully",
-  "data": null,
-  "timestamp": "2025-11-03T10:30:00Z"
-}
-```
-
-### 5. Delete Blind Box (Brand Service)
-
-**Endpoint:** `DELETE /api/brands/delete/{id}`
-
-**Description:** Delete a blind box by ID
-
-**Path Parameters:**
-- `id`: Integer - Blind Box ID
-
-**Example Request:**
-```
-DELETE /api/brands/delete/1
-```
-
-**Success Response (200 OK):**
-```json
-{
-  "success": true,
-  "message": "Blind box deleted successfully",
-  "data": null,
-  "timestamp": "2025-11-03T10:30:00Z"
-}
-```
 
 ---
 
