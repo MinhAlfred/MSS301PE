@@ -1,0 +1,29 @@
+server:
+  port: 4000
+
+spring:
+  application:
+    name: APIGateway
+
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: MSAccount_SE181556
+              uri: http://auth-service:8081
+              predicates:
+                - Path=/api/auth/**
+
+            - id: MSBrand_SE181556
+              uri: http://brand-service:8082
+              predicates:
+                - Path=/api/brands/**
+
+            - id: MSBlindBox_SE181556
+              uri: http://blindbox-service:8080
+              predicates:
+                - Path=/api/blindboxes/**
+
+jwt:
+  secret: "minhvoquangminhvoquangminhvoquangminh"
