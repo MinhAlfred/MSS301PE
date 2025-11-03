@@ -19,11 +19,11 @@ public class DataSeeder implements CommandLineRunner {
     private final BlindBoxCategoriesRepository blindBoxCategoriesRepository;
     @Override
     public void run(String... args) {
-        var category1 = blindBoxCategoriesRepository.save(new BlindBoxCategories(null, "Fantasy", "Mystical creatures, wizards, and legendary beings.","Common to Ultra Rare","$10 - $60"));
-        var category2 = blindBoxCategoriesRepository.save(new BlindBoxCategories(null, "Gaming", "Blind boxes featuring characters from popular video games.", "Common to Epic", "$25 - $70"));
-        var category3 = blindBoxCategoriesRepository.save(new BlindBoxCategories(null, "Sci-Fi", "Space, futuristic themes, and robotic collectibles.", "Rare to Legendary", "$30 - $80"));
-        var category4 = blindBoxCategoriesRepository.save(new BlindBoxCategories(null, "Anime", "Popular anime characters and themed mystery figures.", "Common to Legendary", "$15 - $100"));
-        var category5 = blindBoxCategoriesRepository.save(new BlindBoxCategories(null, "Steampunk", "Victorian-era inspired mechanical and fantasy figures.", "Rare to Epic", "$100 - $190"));
+        var category1 = new BlindBoxCategories(null, "Fantasy", "Mystical creatures, wizards, and legendary beings.","Common to Ultra Rare","$10 - $60");
+        var category2 = new BlindBoxCategories(null, "Gaming", "Blind boxes featuring characters from popular video games.", "Common to Epic", "$25 - $70");
+        var category3 = new BlindBoxCategories(null, "Sci-Fi", "Space, futuristic themes, and robotic collectibles.", "Rare to Legendary", "$30 - $80");
+        var category4 = new BlindBoxCategories(null, "Anime", "Popular anime characters and themed mystery figures.", "Common to Legendary", "$15 - $100");
+        var category5 = new BlindBoxCategories(null, "Steampunk", "Victorian-era inspired mechanical and fantasy figures.", "Rare to Epic", "$100 - $190");
         if( blindBoxCategoriesRepository.count() == 0) {
             blindBoxCategoriesRepository.save(category1);
             blindBoxCategoriesRepository.save(category2);

@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -70,4 +71,10 @@ public class BlindBoxServiceImpl implements BlindBoxService {
         );
         return blindBox.getBrand().getBrandName();
     }
+
+    @Override
+    public List<Brand> getAll() {
+        return brandRepository.findAll();
+    }
+
 }

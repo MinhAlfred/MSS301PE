@@ -40,4 +40,8 @@ public class Controller {
         }
         return ApiResponse.ok("Blind box updated successfully",blindBoxService.update(id, request));
     }
+    @GetMapping("/categories" )
+    public ApiResponse<?> getAllCategory() {
+        return ApiResponse.ok(blindBoxService.getAllCategory());
+    }
 }

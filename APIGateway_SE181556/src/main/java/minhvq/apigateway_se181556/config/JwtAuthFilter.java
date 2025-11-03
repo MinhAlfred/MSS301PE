@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
@@ -20,41 +21,43 @@ public class JwtAuthFilter implements WebFilter {
     private final SecretKey key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
-        String path = exchange.getRequest().getURI().getPath();
-        if (path.startsWith("/api/auth/login")) {
+        var request = exchange.getRequest();
+        var response = exchange.getResponse();
+
+        if (request.getMethod() == HttpMethod.OPTIONS) {
+            response.setStatusCode(HttpStatus.OK);
+            return response.setComplete();
+        }
+
+        String path = request.getURI().getPath();
+        if (path.startsWith("/api/auth/login") || path.startsWith("/api/public/")) {
             return chain.filter(exchange);
         }
-        String authHeader = exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
 
+        String authHeader = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-            return exchange.getResponse().setComplete();
+            response.setStatusCode(HttpStatus.UNAUTHORIZED);
+            return response.setComplete();
         }
 
         String token = authHeader.substring(7);
-
         try {
             Claims claims = Jwts.parserBuilder()
-                    .setSigningKey(key)  // ✅ đúng cho JJWT 0.11.5
+                    .setSigningKey(key)
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
-            String userId = claims.getSubject(); // vì bạn lưu accountId trong subject
-            String role = claims.get("role") != null ? claims.get("role").toString() : null;
 
-            // bạn có thể thêm info vào header để downstream service dùng
-            exchange.getRequest().mutate()
-                    .header("X-USER-ID",userId)
-                    .header("X-USER-ROLE", role)
+            String userId = claims.getSubject();
+            String role = claims.get("role") != null ? claims.get("role").toString() : "USER";
+
+            // Add headers for downstream
+            ServerWebExchange mutated = exchange.mutate()
+                    .request(r -> r.header("X-USER-ID", userId)
+                            .header("X-USER-ROLE", role))
                     .build();
 
-            return chain.filter(
-                    exchange.mutate()
-                            .request(r -> r
-                                    .header("X-USER-ID", userId)
-                                    .header("X-USER-ROLE", role)
-                            )
-                            .build());
+            return chain.filter(mutated);
 
         } catch (Exception e) {
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);

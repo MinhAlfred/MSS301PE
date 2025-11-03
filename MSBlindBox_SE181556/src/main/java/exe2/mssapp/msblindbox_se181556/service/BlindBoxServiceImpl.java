@@ -98,4 +98,10 @@ public class BlindBoxServiceImpl implements BlindBoxService{
         brandClient.update(id, request);
         return getById(id);
     }
+
+    @Override
+    public List<BlindBoxCategories> getAllCategory() {
+        return blindBoxCategoriesRepository.findAll();
+    }
+
 }

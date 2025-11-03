@@ -1,5 +1,6 @@
 package exe2.mssapp.msblindbox_se181556.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,6 +21,7 @@ public class BlindBoxes {
     private Integer blindBoxId;
     private String name;
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private BlindBoxCategories category;
     private int brandId;
     @Column(precision = 10, scale = 2)

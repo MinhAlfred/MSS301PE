@@ -32,4 +32,8 @@ public class Controller {
         blindBoxService.update(id, request);
         return ApiResponse.ok("Blind box updated successfully");
     }
+    @GetMapping("/all")
+    public ApiResponse<?> getAll() {
+        return ApiResponse.ok(blindBoxService.getAll());
+    }
 }
